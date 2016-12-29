@@ -11,7 +11,7 @@ import com.bomeans.irapi.IRAPI;
 public class TestIRAPIApp extends Application {
 
     // apply a API KEY from Bomeans to run this demo
-    private String BOMEANS_SDK_API_KEY = "";
+    public static String BOMEANS_SDK_API_KEY = "";
 
     private MyIrBlaster mMyIrBlaster = new MyIrBlaster();
 
