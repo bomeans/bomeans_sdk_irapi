@@ -31,12 +31,12 @@ dependencies {
 }
 
 task deleteJar(type: Delete) {
-    delete 'libs/irapi.jar'
+    delete 'release/irapi.jar'
 }
 
 task createJar(type: Copy) {
     from('build/intermediates/bundles/release')
-    into('build/outputs/jar')
+    into('release')
     include('classes.jar')
     rename('classes.jar', 'irapi.jar')
 }
