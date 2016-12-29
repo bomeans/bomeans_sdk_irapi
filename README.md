@@ -1,5 +1,4 @@
 # bomeans_sdk_irapi
-
 IRAPI is a wrapper for original IRKit APIs of Bomeans IR SDK(Android).
 IRAPI APIs include all the functionality of IRKit APIs. We recommend you to use IRAPI for new projects.
 
@@ -10,3 +9,7 @@ To use the IRAPI APIs, simply add the irapi.jar, alone with the irkit.jar and ir
 Though you can call both IRKit and IRAPI APIs in the same application, we suggest you choose only one set of APIs to avoid complexity.
 
 [Note] You need to apply a SDK key for the demo application to run. Contact Bomeans Design for the key.
+
+Test App Screen Shot:
+
+![App Screenshot](/Screenshot_01.jpg?raw=true)
