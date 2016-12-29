@@ -1,7 +1,7 @@
 #bomeans_sdk_irapi
 
 ##Download
-[download irapi.jar (current version)](https://github.com/bomeans/bomeans_sdk_irapi/tree/master/irapi/release/irapi.jar?raw=true)
+[download irapi.jar (current version)](https://github.com/bomeans/bomeans_sdk_irapi/tree/master/irapi/release)
 
 ##Introduction
 IRAPI is a wrapper for original IRKit APIs of Bomeans IR SDK(Android).
