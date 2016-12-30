@@ -128,6 +128,16 @@ public class IRRemote implements IIRRemote {
 	}
 
 	@Override
+	public Boolean acSetKeyOption(String keyId, String optionId) {
+		if (null != mIrRemote) {
+			int errCode = mIrRemote.setKeyOption(keyId, optionId);
+			return errCode == 0;
+		} else {
+			return false;
+		}
+	}
+
+	@Override
 	public ACGUIFeatures acGetGuiFeatures() {
 		if (null != mIrRemote) {
 			BIRGUIFeature guiFeatures = mIrRemote.getGuiFeature();
