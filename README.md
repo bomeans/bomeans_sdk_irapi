@@ -5,6 +5,9 @@
 
 Note: The irapi.jar does not work alone. You still need to download the [Bomeans SDK](https://github.com/bomeans/bomeans_sdk_bin/tree/master/Android).
 
+##Documentation
+[IRAPI documentation](https://github.com/bomeans/bomeans_sdk_irapi/tree/master/irapi)
+
 ##Introduction
 IRAPI is a wrapper for original IRKit APIs of Bomeans IR SDK(Android).
 IRAPI APIs include all the functionality of IRKit APIs. We recommend you to use IRAPI for new projects.
