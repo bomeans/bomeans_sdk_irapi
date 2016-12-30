@@ -275,17 +275,18 @@ Once the IIRReader instance is created, use the following IIRReader APIs to do t
 Example:
 
 ```
-mIrReader.startLearningAndGetData(
-    BIRReader.PREFER_REMOTE_TYPE.Auto, 
-    new BIRReader.BIRReaderFormatMatchCallback() {
+// IR Learning example
+
+mIrReader.startLearningAndGetData(IIRReader.PREFER_REMOTE_TYPE.Auto, new IIRReader.IIRReaderFormatMatchCallback() {
     @Override
-    public void onFormatMatchSucceeded(final BIRReader.ReaderMatchResult readerMatchResult) {
-        // Format match result
-        thisActivity.runOnUiThread(new Runnable() {
+    public void onFormatMatchSucceeded(final IIRReader.ReaderMatchResult formatMatchResult) {
+        // if you are not interested in parsing the learned data into IR format, skip this callback.
+        // this callback is used mostly for debugging
+        LearnAndSendActivity.this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (readerMatchResult.isAc()) {
-                    // if the matched remote is AC-type
+                if (formatMatchResult.isAc()) {
+                    // if the matched remote is AC-type 
                 } else {
                     // if the matched remote is TV-type
                 }
@@ -294,34 +295,66 @@ mIrReader.startLearningAndGetData(
     }
 
     @Override
-    public void onFormatMatchFailed(BIRReader.FormatParsingErrorCode errorCode) {
-        thisActivity.runOnUiThread(new Runnable() {
+    public void onFormatMatchFailed(final IIRReader.FormatParsingErrorCode errorCode) {
+        // if you are not interested in parsing the learned data into IR format, skip this callback.
+        // this callback is used mostly for debugging
+        LearnAndSendActivity.this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                // doing GUI error handling
+                switch (errorCode) {
+                    case LearningModeFailed:
+                        // Learning mode failed
+                        break;
+                    case UnrecognizedFormat:
+                        //Un-recognized Format
+                        break;
+                    case NoValidLearningData:
+                    default:
+                        //No Valid Learning Data
+                        break;
+                }
             }
         });
     }
 
     @Override
-    public void onLearningDataReceived(final byte[] learningDataBytes) {
+    public void onLearningDataReceived(byte[] learningData) {
+    
+        // you can remember the learned data for re-play later
+        mLearnedDataForSending = learningData;
 
-        // Get learned IR data
-        mLearnedDataForSending = learningDataBytes;
-        thisActivity.runOnUiThread(new Runnable() {
+        // you can read the wave count (number of High/Low siignals) and the carrier frequency 
+        // of the learned data. (Needed only for debugging)
+        int waveCount = mIrReader.getWaveCount();
+        int frequency = mIrReader.getFrequency();
+
+        LearnAndSendActivity.this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                // GUI handling
+                // handle GUI if any
             }
         });
     }
 
     @Override
-    public void onLearningDataFailed(BIRReader.LearningErrorCode errorCode) {
-        thisActivity.runOnUiThread(new Runnable() {
+    public void onLearningDataFailed(final IIRReader.LearningErrorCode errorCode) {
+    
+        // GUI error handling
+        LearnAndSendActivity.this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                // doing GUI error handling
+                switch (errorCode) {
+                    case LearningModeFailed:
+                        //Learning Mode Failed
+                        break;
+                    case TimeOut:
+                        //Time Out
+                        break;
+                    case IncorrectLearnedData:
+                    default:
+                        //Incorrect Data
+                        break;
+                }
             }
         });
     }
@@ -344,50 +377,58 @@ mSendButton.setOnClickListener(new View.OnClickListener() {
 
 // Learn and Recognize example:
 
-mIrReader.startLearningAndSearchCloud(
-    false, preferRemoteType, new BIRReader.BIRReaderRemoteMatchCallback() {
+mIrReader.startLearningAndSearchCloud(false, preferRemoteType, new IIRReader.IIRReaderRemoteMatchCallback() {
     @Override
-    public void onRemoteMatchSucceeded(final List<BIRReader.RemoteMatchResult> list) {
-        // get the matched remote controller list
-        thisActivity.runOnUiThread(new Runnable() {
+    public void onRemoteMatchSucceeded(final List<IIRReader.RemoteMatchResult> list) {
+        // format match is usually for debugging, you can safely ignore this callback
+        LearnAndRecognizeActivity.this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                showMatchResult(list); // showing match results 
+                // showing the matched format(s);
             }
         });
     }
 
     @Override
-    public void onRemoteMatchFailed(BIRReader.CloudMatchErrorCode errorCode) {
-        thisActivity.runOnUiThread(new Runnable() {
+    public void onRemoteMatchFailed(IIRReader.CloudMatchErrorCode errorCode) {
+        // format match is usually for debugging, you can safely ignore this callback
+        LearnAndRecognizeActivity.this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                // doing GUI error handling
+                // error handling
             }
         });
     }
 
     @Override
-    public void onFormatMatchSucceeded(final List<BIRReader.ReaderMatchResult> list) {
-        // Format match results
-        thisActivity.runOnUiThread(new Runnable() {
+    public void onFormatMatchSucceeded(final List<IIRReader.ReaderMatchResult> list) {
+        // This is where you get the matched remote info list
+        
+        LearnAndRecognizeActivity.this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                // GUI handling
+                // showing the matched remote(s)
             }
         });
     }
 
     @Override
-    public void onFormatMatchFailed(final BIRReader.FormatParsingErrorCode errorCode) {
-        thisActivity.runOnUiThread(new Runnable() {
+    public void onFormatMatchFailed(final IIRReader.FormatParsingErrorCode errorCode) {
+        // error handling
+
+        LearnAndRecognizeActivity.this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                // doing GUI error handling
+                if (errorCode == IIRReader.FormatParsingErrorCode.UnrecognizedFormat) {
+                    // handling Un-recognized Format
+                } else {
+                    // handling Learning Failed
+                }
             }
         });
     }
 });
+
 ```
 
 
