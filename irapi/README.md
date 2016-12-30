@@ -124,12 +124,12 @@ Notes:
 | ```TimerDisplayMode``` | ```None``` | No timer functions
 | | ```Clock``` | Timer works in clock type
 | | ```CountDown``` | Timer works in count-down type
-| ```TimerOperationMode``` | ```modeUnknown``` |
-| | ```mode1``` | 
-| | ```mode2``` |
-| | ```mode3``` |
-| | ```mode4``` |
-| | ```mode5``` |
+| ```TimerOperationMode``` | ```modeUnknown``` | No ON/OFF timer supported
+| | ```mode1``` | Only OFF timer is supported
+| | ```mode2``` | Support ON and/or OFF timer, can be set only when power is on.
+| | ```mode3``` | Support ON and/or OFF timer, can be set regardless of power state.
+| | ```mode4``` | Either ON or OFF timer, can be set only when power is on.
+| | ```mode5``` | Can set ON timer while powered off; set OFF timer while powered on.
 
 #Smart Picker
 Most used way to pick up a remote controller from the database containing massive remotes is the so-called smart picker. The user aim the remote controller to the appliance, press a test key to see if the appliance reactives to the key, and repeat this procedure until a proper remote is selected. 
