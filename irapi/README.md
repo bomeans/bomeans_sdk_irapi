@@ -160,19 +160,19 @@ For the "Learn and Match", it provides an alternative way to picking out the cor
 ###Learn and Store
 The learned IR data (for a specific key on the remote) can be passed back to the App in a compressed form. The App or host application can save the data in its own storage with the specific key name or key ID. To replay the IR signal, simply read the data back from storage and send to the SDK for transmission.
 
-![Fig.1](../_docs/learning_diagrams_1.png)
+![Fig.1](_docs/learning_diagrams_1.png)
 
 ###Learn and Match
 Learn and Match allow the learned IR data to be analyzed and sent to the cloud for matching the existing remote controllers in database. This is sutable for 
 <li>Providing a easy way to find the exact the same or similar remote controller(s) by only a few key presses on the remote controller.</li>
 <li>Download the similar remote controller to reduce the number of amount of keys to be learned. User need to learn the keys not exist or not matched with their target appliance.</li>
 
-![Fig.2](../_docs/learning_diagrams_2.png)
+![Fig.2](_docs/learning_diagrams_2.png)
 
 ##Learning APIs
 The learning APIs are separated into two parts. The upper APIs are for App to issue commands to switch the IR Blaster into learning mode, and receive the learned IR data from the callbacks. The lower APIs are for passing the data comes from the IR blaster back to the SDK for processing. 
 
-![Fig.3](../_docs/learning_diagrams_3.png)
+![Fig.3](_docs/learning_diagrams_3.png)
 
 ###Lower APIs
 SDK provides a BIRIRBlaster interface for briding the in/out data between the SDK and the IR Blaster hardware. The App should have a instance which extends the BIRIRBlaster interface, and passing this instance to the SDK via IRKit.setIRHW(). Once this is done, all communication data for the IR Blaster hardware will be passed through the instance the App provided. 
