@@ -20,6 +20,7 @@ import com.bomeans.IRKit.VoiceSearchResultItem;
 import com.bomeans.wifi2ir.ISmartLinkCallback;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -491,6 +492,39 @@ public class IRAPI {
 
 		return null != task;
 	}
+
+    /**
+     * Get the keys for the smart picker of the specified type.
+     * @param typeId
+     * @param getNew
+     * @param callback
+     * @return
+     */
+	public static Boolean getSmartPickerKeys(String typeId, Boolean getNew, final IGetSmartPickerKeysCallback callback) {
+        AsyncTask<?, ?, ?> task = IRKit.webGetSmartPickerKeysByType(typeId, getNew, new IWebAPICallBack() {
+            @Override
+            public void onPreExecute() {}
+
+            @Override
+            public void onPostExecute(Object keyList, int result) {
+
+                if (null != callback) {
+
+                    if (result == ConstValue.BIRNoError) {
+                        String[] _keyList = (String[]) keyList;
+                        callback.onDataReceived(Arrays.asList(_keyList));
+                    } else {
+                        callback.onError(result);
+                    }
+                }
+            }
+
+            @Override
+            public void onProgressUpdate(Integer... integers) {}
+        });
+
+        return null != task;
+    }
 
 	public static Boolean createSmartPicker(String typeId, String brandId, Boolean getNew, final ICreateSmartPickerCallback callback) {
 
