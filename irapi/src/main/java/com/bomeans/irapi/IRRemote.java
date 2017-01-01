@@ -76,7 +76,7 @@ public class IRRemote implements IIRRemote {
 	public Boolean transmitIR(String keyId) {
 		if (null != mIrRemote) {
 			int errCode = mIrRemote.transmitIR(keyId, null);
-			return true;
+            return errCode == 0;
 		} else {
 			return false;
 		}
