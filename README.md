@@ -1,12 +1,14 @@
 #bomeans_sdk_irapi
 
 ##Download
-[download irapi.jar (current version)](https://github.com/bomeans/bomeans_sdk_irapi/tree/master/irapi/release)
+* [download irapi.jar (current version)](https://github.com/bomeans/bomeans_sdk_irapi/tree/master/irapi/release)
+* [browse the IRAPI source code](https://github.com/bomeans/bomeans_sdk_irapi/tree/master/irapi)
 
-Note: The irapi.jar does not work alone. You still need to download the [Bomeans SDK](https://github.com/bomeans/bomeans_sdk_bin/tree/master/Android).
+Note: The irapi.jar does not work alone. You still need to download the SDK.
+* [download Bomeans IR SDK](https://github.com/bomeans/bomeans_sdk_bin/tree/master/Android).
 
 ##Documentation
-[IRAPI documentation](https://github.com/bomeans/bomeans_sdk_irapi/tree/master/irapi)
+* [IRAPI outlook (README.md)](https://github.com/bomeans/bomeans_sdk_irapi/tree/master/irapi/release)
 
 ##Introduction
 IRAPI is a wrapper for original IRKit APIs of Bomeans IR SDK(Android).
@@ -19,7 +21,9 @@ To use the IRAPI APIs, simply add the irapi.jar, alone with the irkit.jar and ir
 
 Though you can call both IRKit and IRAPI APIs in the same application, we suggest you choose only one set of APIs to avoid complexity.
 
-##Test App Screen Shot:
+##Test App
+This repos includes a test app to demonstrate the IRAPI usage.
+
 [Note] You need to apply a SDK key for the demo application to run. Contact Bomeans Design for the key.
 
-![App Screenshot](_docs/Screenshot_01.jpg?raw=true)
+<img src="_docs/Screenshot_01.jpg" width="400">
