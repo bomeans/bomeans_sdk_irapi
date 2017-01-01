@@ -22,4 +22,4 @@ Though you can call both IRKit and IRAPI APIs in the same application, we sugges
 ##Test App Screen Shot:
 [Note] You need to apply a SDK key for the demo application to run. Contact Bomeans Design for the key.
 
-![App Screenshot](_docs\Screenshot_01.jpg?raw=true)
+![App Screenshot](_docs/Screenshot_01.jpg?raw=true)
