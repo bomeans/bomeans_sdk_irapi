@@ -39,7 +39,7 @@ You need to apply a valid API Key for the SDK to run normally.<br>
 Apply the key here: http://www.bomeans.com/Mainpage/Apply/apikey
 
 ##Setting your SDK
-```
+```java
 IRAPI.init(apiKey, applicationContext)
 ```
 where apiKey is the API Key issued by Bomeans Design. applicationContext is the application context of your app.
@@ -47,7 +47,7 @@ where apiKey is the API Key issued by Bomeans Design. applicationContext is the 
 ##Switch your target server if your target users are in China
 If your target users locate in China, you can optionally switch the connected cloud server the one located in China for better performance.<br>
 To switch to China server,
-```
+```java
 IRAPI.switchToChineseServer(true)
 ```
 Note: If the above function is not call, a default server located outside China will be used.
@@ -57,11 +57,11 @@ The SDK provides the following APIs for accessing the basic information of the r
 These APIs are asynchronous, the results will be returned in the callbacks.
 
 | API	| Description | Returned Object in Callback
-| ------------- | ------------------ | -------------
-| ```IRAPI.getTypeList``` | Get type list | List<TypeInfo>
-| ```IRAPI.getBrandList``` | Get brand list | List<BrandInfo>
-| ```IRAPI.getRemoteList```	| Get remote ID list |	List<RemoteInfo> (Note1)
-| ```IRAPI.searchRemote```	| Get remote ID list by keyword |	SearchResult (Note2)
+| --- | --- | ---
+| `IRAPI.getTypeList` | Get type list | List<TypeInfo>
+| `IRAPI.getBrandList` | Get brand list | List<BrandInfo>
+| `IRAPI.getRemoteList`	| Get remote ID list |	List<RemoteInfo> (Note1)
+| `IRAPI.searchRemote`	| Get remote ID list by keyword |	SearchResult (Note2)
 
 Notes
 
@@ -76,10 +76,10 @@ Two types of remote controllers can be created:
 <li>Single Remote Controller - Single remote controller in the database.</li>
 
 | API | Description | Callback | Remark
-|------------------- | ---------------------------------------------------- | ----------- | ------------------------------
-| ```IRAPI.createRemote``` | Create a single remote controller (with specific remote id) (Note1) | IRRemote | Both TV-type and AC-type remotes are supported.
-| ```IRAPI.createSimplifiedUniversalRemote``` | Create a simplified-keys universal remote (Note2) | IRRemote | Both AC/TV-type remotes are supported.
-| ```IRAPI.createFullUniversalRemote``` | Create a full-keys universal remote (Note3) | IRRemote | Only TV-type remotes are supported.
+| --- | --- | --- | ---
+| `IRAPI.createRemote` | Create a single remote controller (with specific remote id) (Note1) | IRRemote | Both TV-type and AC-type remotes are supported.
+| `IRAPI.createSimplifiedUniversalRemote` | Create a simplified-keys universal remote (Note2) | IRRemote | Both AC/TV-type remotes are supported.
+| `IRAPI.createFullUniversalRemote` | Create a full-keys universal remote (Note3) | IRRemote | Only TV-type remotes are supported.
 
 Note:
 
@@ -89,47 +89,47 @@ Note:
 
 #Remote Controller Manipulation
 
-Once the Remote Controller instance (```IRRemote```) is created, you can manipulate the remote by using the following APIs:
+Once the Remote Controller instance (`IRRemote`) is created, you can manipulate the remote by using the following APIs:
 
 | API | Description | TV-type<br>Remote | TV-type<br>Universal Remote | AC-type<br>Remote | AC-type<br>Universal Remote
-| ------------- | ---------------------------------------------------------------| ----- | ----- | ----- | -----
-| ```getBrandId``` | Get the brand id of this remote | V | V | V | V
-| ```getModels``` | Get the appliance model names for this remote | V	| | V
-| ```getRemoteId``` | Get the remote id of this remote | V | V | V | V 
-| ```getKeyList``` | Get all key(button) of the remote | V | V | V | V
-| ```transmitIR``` | Send the IR data (Note1) | V | V | V | V
-| ```startTransmitRepeatedIR``` | Start a IR transmission<br>(Call endTrasmitIR to stop transmission) | V			
-| ```endTransmitRepeatedIR``` | Stop IR transmission | V			
-| ```setRepeatCount``` | Set the number of frames to be repeatly sent for a single press on a TV-type remote controller. | V | | | 
-| ```acGetGuiFeatures``` | Get the GUI options for AC remote (Note2) | | | V |	
-| ```acGetActiveKeys``` | Get the currently active key(button) of the AC remote | | | V | V
-| ```acGetKeyOption``` | Get the currently active options of the specific key(button) of a AC remote  | | | V | V	
-| ```acSetKeyOption``` | Set the currently active option of the specific key(button) of a AC remote<br>(Since v.20161228) | | | V | V
-| ```acGetTimerKeys``` | Get the timer-related keys(buttons) of the AC remote | | | V |	
-| ```acSetOnTime``` | Set the ON timer of the AC remote  | | | V |
-| ```acSetOffTime``` | Set the OFF timer of the AC remote | | | V |
-| ```acGetStateData``` | Get the data of current states of the AC remote<br>(For storing the states of the AC remote) | | | V | V	
-| ```acSetStateData``` | Restore the current states of the AC remote | | | V | V	
+| --- | --- | --- | --- | --- | ---
+| `getBrandId` | Get the brand id of this remote | V | V | V | V
+| `getModels` | Get the appliance model names for this remote | V	| | V
+| `getRemoteId` | Get the remote id of this remote | V | V | V | V 
+| `getKeyList` | Get all key(button) of the remote | V | V | V | V
+| `transmitIR` | Send the IR data (Note1) | V | V | V | V
+| `startTransmitRepeatedIR` | Start a IR transmission<br>(Call endTrasmitIR to stop transmission) | V			
+| `endTransmitRepeatedIR` | Stop IR transmission | V			
+| `setRepeatCount` | Set the number of frames to be repeatly sent for a single press on a TV-type remote controller. | V | | | 
+| `acGetGuiFeatures` | Get the GUI options for AC remote (Note2) | | | V |	
+| `acGetActiveKeys` | Get the currently active key(button) of the AC remote | | | V | V
+| `acGetKeyOption` | Get the currently active options of the specific key(button) of a AC remote  | | | V | V	
+| `acSetKeyOption` | Set the currently active option of the specific key(button) of a AC remote<br>(Since v.20161228) | | | V | V
+| `acGetTimerKeys` | Get the timer-related keys(buttons) of the AC remote | | | V |	
+| `acSetOnTime` | Set the ON timer of the AC remote  | | | V |
+| `acSetOffTime` | Set the OFF timer of the AC remote | | | V |
+| `acGetStateData` | Get the data of current states of the AC remote<br>(For storing the states of the AC remote) | | | V | V	
+| `acSetStateData` | Restore the current states of the AC remote | | | V | V	
     
 Notes:
 
 <li>1. For the AC remotes, an optional "key option" parameter can be passed to switch the remote controller to the specified key state (such as switch the mode to Cool mode directly.) If the "key option" is obmitted, the key state will switch to next available state cycliclly.</li>
-<li>2. The GUI options (```ACGUIFeatures```) are for the GUI outlook of an AC-type remote controller.
+<li>2. The GUI options (`ACGUIFeatures`) are for the GUI outlook of an AC-type remote controller.
 
 | Category | Options | Description
-| -------------- | ---------------- | --------------------------------------
-| ```DisplayMode``` | ```NoDisplay``` | This AC remote does not have a display panel 
-| | ```ValidWhilePoweredOn``` | This AC remote has a normal display panel <br>(The panel is off when power on; is off when power off)
-| | ```AlwaysOn``` | The panel is always on regardless of the power state (on or off)
-| ```TimerDisplayMode``` | ```None``` | No timer functions
-| | ```Clock``` | Timer works in clock type
-| | ```CountDown``` | Timer works in count-down type
-| ```TimerOperationMode``` | ```modeUnknown``` | No ON/OFF timer supported
-| | ```mode1``` | Only OFF timer is supported
-| | ```mode2``` | Support ON and/or OFF timer, can be set only when power is on.
-| | ```mode3``` | Support ON and/or OFF timer, can be set regardless of power state.
-| | ```mode4``` | Either ON or OFF timer, can be set only when power is on.
-| | ```mode5``` | Can set ON timer while powered off; set OFF timer while powered on.
+| --- | --- | ---
+| `DisplayMode` | `NoDisplay` | This AC remote does not have a display panel 
+| | `ValidWhilePoweredOn` | This AC remote has a normal display panel <br>(The panel is off when power on; is off when power off)
+| | `AlwaysOn` | The panel is always on regardless of the power state (on or off)
+| `TimerDisplayMode` | `None` | No timer functions
+| | `Clock` | Timer works in clock type
+| | `CountDown` | Timer works in count-down type
+| `TimerOperationMode` | `modeUnknown` | No ON/OFF timer supported
+| | `mode1` | Only OFF timer is supported
+| | `mode2` | Support ON and/or OFF timer, can be set only when power is on.
+| | `mode3` | Support ON and/or OFF timer, can be set regardless of power state.
+| | `mode4` | Either ON or OFF timer, can be set only when power is on.
+| | `mode5` | Can set ON timer while powered off; set OFF timer while powered on.
 
 #Smart Picker
 Most used way to pick up a remote controller from the database containing massive remotes is the so-called smart picker. The user aim the remote controller to the appliance, press a test key to see if the appliance reactives to the key, and repeat this procedure until a proper remote is selected. 
@@ -139,13 +139,13 @@ The SDK provides some APIs for helping the Apps to integrate the above steps for
 To create a smart picker instance, call ```IRAPI.createSmartPicker``` and get the returned instance of BIRTVPicker in the callback function. After that, you can manipulate the picker by the provided functions of the ```ITVSmartPicker``` interface.
 
 | API | Description | Remark
-| ------------- | --------------------------------------- | -----------------------------------
-| ```reset``` | Re-start the smart picker | Call this method if need to re-start the picking process by reseting the picker's internal state.
-| ```getPickerKey```	| Get the current picker key(button) for user to test | The key ID for testing is returned
-| ```isPickerCompleted``` | Check if the picking process has completed. | 
-| ```transmitIR``` | Transmit the IR data of the current testing key |
-| ```setPickerResult```	| Pass the user feedback to the picker | 
-| ```getPickerResult``` | Get the matched remotes once the test is completed | Return the matched remote ID(s) or empty list if failed.
+| --- | --- | ---
+| `reset` | Re-start the smart picker | Call this method if need to re-start the picking process by reseting the picker's internal state.
+| `getPickerKey`	| Get the current picker key(button) for user to test | The key ID for testing is returned
+| `isPickerCompleted` | Check if the picking process has completed. | 
+| `transmitIR` | Transmit the IR data of the current testing key |
+| `setPickerResult`	| Pass the user feedback to the picker | 
+| `getPickerResult` | Get the matched remotes once the test is completed | Return the matched remote ID(s) or empty list if failed.
 
 #IR Learning 
 ##Introduction of IR Learning
@@ -181,7 +181,7 @@ Note: How to handle the communication data in/out to/from the IR Blaster is depe
 
 Here's an example:
 
-```
+```java
 public class MyNetworkIRDevice implements IIRBlaster {
     private IDataReceiveCallback mDataReceiveCallback;
 
@@ -237,7 +237,7 @@ The App should first create a BIRReader instance for manipulating the learning f
 
 Here's an example for creating a BIRReader instance:
 
-```
+```java
 // initialize the SDK
 IRAPI.init(BOMEANS_SDK_API_KEY, getApplicationContext());
 
@@ -261,20 +261,20 @@ IRAPI.createIRReader(getNew(), new IIRReaderCallback() {
 Once the IIRReader instance is created, use the following IIRReader APIs to do the learning manipulations.
 
 | API | Description
-| ---------------- | ---------------------------------
-| ```startLearningAndGetData``` | Start a learning session, and get the result from the callback
-| ```startLearningAndSearchCloud``` | Start a learning session, and get the matched remote IDs from the callback
-| ```stopLearning``` | Abort the learning (Note: Each learning session will be ended automatically either a valid IR signal is learned or 15 seconds time-out time is reached.)
-| ```sendLearningData``` | The learning data got from ```startLearningAndGetData``` can be passed into this function for re-transmission.
-| ```reset``` | Reset the ```startLearningAndSearchCloud``` session.(```startLearningAndSearchCloud``` will cache the previously passed-in learning data. If reset() is not called, invoke ```startLearningAndSearchCloud``` twice with different learning data will result in passing two learning data to the cloud to match the remote(s) conaining both IR data.)
-| ```getBestMatches``` | Get the best match results
-| ```getPossibleMatches``` | Get the other possible match results not included in the ```getBestMatches``` result
-| ```getAllMatches``` | Get all matches, including those from ```getBestMatches``` and ```getPossibleMatches```
-| ```getWaveCount``` | Get the number of waveform count of the learned IR signal. A high or low signal is counted as 1 waveform. (For debugging)
-| ```getFrequency``` | Get the carrier frequency of the learned IR signal. (For debugging)
+| --- | ---
+| `startLearningAndGetData` | Start a learning session, and get the result from the callback
+| `startLearningAndSearchCloud` | Start a learning session, and get the matched remote IDs from the callback
+| `stopLearning` | Abort the learning (Note: Each learning session will be ended automatically either a valid IR signal is learned or 15 seconds time-out time is reached.)
+| `sendLearningData` | The learning data got from `startLearningAndGetData` can be passed into this function for re-transmission.
+| `reset` | Reset the `startLearningAndSearchCloud` session.(`startLearningAndSearchCloud` will cache the previously passed-in learning data. If reset() is not called, invoke ```startLearningAndSearchCloud``` twice with different learning data will result in passing two learning data to the cloud to match the remote(s) conaining both IR data.)
+| `getBestMatches` | Get the best match results
+| `getPossibleMatches` | Get the other possible match results not included in the `getBestMatches` result
+| `getAllMatches` | Get all matches, including those from `getBestMatches` and `getPossibleMatches`
+| `getWaveCount` | Get the number of waveform count of the learned IR signal. A high or low signal is counted as 1 waveform. (For debugging)
+| `getFrequency` | Get the carrier frequency of the learned IR signal. (For debugging)
 Example:
 
-```
+```java
 // IR Learning example
 
 mIrReader.startLearningAndGetData(IIRReader.PREFER_REMOTE_TYPE.Auto, new IIRReader.IIRReaderFormatMatchCallback() {
