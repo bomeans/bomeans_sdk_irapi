@@ -29,5 +29,4 @@ dependencies {
     //compile(project(':irapi')) {
     //    exclude module: 'irkit'
     //}
-    compile project(path: ':irapi')
 }
