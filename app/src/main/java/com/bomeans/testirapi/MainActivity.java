@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, CreateTVSmartPickerActivity.class);
                 intent.putExtra("type_id", "1");
-                intent.putExtra("brand_id", "3118");
+                intent.putExtra("brand_id", "3118");//"3118");
                 MainActivity.this.startActivity(intent);
             }
         });
