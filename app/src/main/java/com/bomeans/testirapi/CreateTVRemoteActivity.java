@@ -53,6 +53,13 @@ public class CreateTVRemoteActivity extends AppCompatActivity {
                     // get all keys in this remote
                     String[] keyList = remote.getKeyList();
 
+                    // machine models
+                    String[] machineModels = remote.getModels();
+                    Log.d(DBG_TAG, "supported machine models:");
+                    for (String model : machineModels) {
+                        Log.d(DBG_TAG, model);
+                    }
+
                     LinearLayout layout = new LinearLayout(CreateTVRemoteActivity.this);
                     layout.setOrientation(LinearLayout.VERTICAL);
 
