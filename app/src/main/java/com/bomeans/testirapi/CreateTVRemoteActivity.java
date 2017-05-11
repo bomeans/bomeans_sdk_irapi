@@ -50,6 +50,11 @@ public class CreateTVRemoteActivity extends AppCompatActivity {
 
                     progressBar.setVisibility(View.GONE);
 
+                    // set the repeat count of the transmitted IR.
+                    // if set to 0, only the 1st frame (called normal-frame) is transmitted,
+                    // set to 1 (default), 1 normal-frame + 1 repeat-frame is transmitted.
+                    remote.setRepeatCount(2);
+
                     // get all keys in this remote
                     String[] keyList = remote.getKeyList();
 
