@@ -35,7 +35,11 @@ public class IRAPI {
      * @param irBlaster user-defined IR Blaster instance
      */
 	public static void setCustomerIrBlaster(IIRBlaster irBlaster) {
-		IRKit.setIRHW(new IrBlasterWrapper(irBlaster));
+		if(irBlaster ==null){
+			IRKit.setIRHW(null);
+		}else {
+			IRKit.setIRHW(new IrBlasterWrapper(irBlaster));
+		}
 	}
 
 	/**
