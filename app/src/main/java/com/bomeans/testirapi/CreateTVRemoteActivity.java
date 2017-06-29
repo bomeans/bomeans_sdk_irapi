@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -72,10 +73,22 @@ public class CreateTVRemoteActivity extends AppCompatActivity {
                         final String keyId = keyList[i];
                         Button keyButton = new Button(CreateTVRemoteActivity.this);
                         keyButton.setText(keyId);
-                        keyButton.setOnClickListener(new View.OnClickListener() {
+                        /*keyButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 remote.transmitIR(keyId);
+                            }
+                        });*/
+                        keyButton.setOnTouchListener(new View.OnTouchListener() {
+                            @Override
+                            public boolean onTouch(View v, MotionEvent event) {
+
+                                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                                    remote.startTransmitRepeatedIR(keyId);
+                                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                                    remote.endTransmitRepeatedIR();
+                                }
+                                return false;
                             }
                         });
 

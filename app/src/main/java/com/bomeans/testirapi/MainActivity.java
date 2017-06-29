@@ -51,9 +51,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 Intent intent = new Intent(MainActivity.this, CreateTVRemoteActivity.class);
-                intent.putExtra("type_id", "1");
-                intent.putExtra("brand_id", "12");
-                intent.putExtra("remote_id", "PANASONIC_N2QAYB_000846");
+                intent.putExtra("type_id", "3");//"1");
+                intent.putExtra("brand_id", "3151");//"12");
+                intent.putExtra("remote_id", "SETTOP_TAIPEINET_TW_1");//"PANASONIC_N2QAYB_000846");
                 MainActivity.this.startActivity(intent);
 
             }
@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, CreateACRemoteActivity.class);
                 intent.putExtra("type_id", "2");
                 intent.putExtra("brand_id", "1449");
-                intent.putExtra("remote_id", "DAIKIN-423A13");
+                intent.putExtra("remote_id", "DAIKIN-AI-A1-3");
                 MainActivity.this.startActivity(intent);
             }
         });
