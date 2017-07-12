@@ -49,4 +49,15 @@ public interface ITVSmartPicker {
 	 */
 	void reset();
 
+	/**
+	 * Get the brand all remote;
+	 * @return
+	 */
+	int getRemoteCount();
+
+	/**
+	 * get set remote now
+	 * @return
+	 */
+	int getNowRemoteNum();
 }

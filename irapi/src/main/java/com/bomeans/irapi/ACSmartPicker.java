@@ -2,13 +2,12 @@ package com.bomeans.irapi;
 
 
 import com.bomeans.IRKit.ACSmartInfo;
+import com.bomeans.IRKit.BIRACPicker;
 import com.bomeans.IRKit.ConstValue;
 import com.bomeans.IRKit.RemoteUID;
 
 public class ACSmartPicker implements ITVSmartPicker{
 
-
-    //    private BIRACPicker biracPicker;
     private com.bomeans.IRKit.ACSmartPicker biracPicker;
     private String mCurrentKey = null;
     RemoteUID mResults = null;
@@ -20,9 +19,11 @@ public class ACSmartPicker implements ITVSmartPicker{
         this.biracPicker = acSmartPicker;
     }
 
-    public void setNum(int num){
-        biracPicker.setTryKeyNum(num);
+    @Override
+    public void setNum(int num) {
+            biracPicker.setTryKeyNum(num);
     }
+
 
     public RemoteInfo getModel(){
         return model;
@@ -96,4 +97,15 @@ public class ACSmartPicker implements ITVSmartPicker{
     public void reset() {
 
     }
+
+    public int getNowRemoteNum() {
+        return biracPicker.getNowModelNum();
+    }
+    public int getRemoteCount() {
+        return biracPicker.getModelCount();
+    }
+
+
+
+
 }

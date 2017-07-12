@@ -123,4 +123,14 @@ public class TVSmartPicker implements ITVSmartPicker {
 	public RemoteInfo getModel() {
 		return null;
 	}
+
+	@Override
+	public int getNowRemoteNum() {
+		return 0;
+	}
+
+	@Override
+	public int getRemoteCount() {
+		return 0;
+	}
 }
