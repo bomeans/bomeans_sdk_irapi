@@ -1,6 +1,10 @@
 package com.bomeans.irapi;
 
+import com.bomeans.IRKit.ACSmartInfo;
+
 public interface ITVSmartPicker {
+
+	ACSmartInfo begin();
 
 	/**
 	 * Get the key id for testing
@@ -14,12 +18,6 @@ public interface ITVSmartPicker {
 	 */
 	RemoteInfo getModel();
 
-	/**
-	 * set test model key Quantity
-	 * for AC
-	 * @return
-	 */
-	void setNum(int num);
 	/**
 	 * Transmit the IR signal of the current key
 	 * @return
@@ -44,11 +42,17 @@ public interface ITVSmartPicker {
 	 */
 	SmartPickerResult[] getPickerResult();
 
+
 	/**
 	 * To restart the smart picker
 	 */
 	void reset();
 
+	/**
+	 * set AC smartpicker testnum
+	 * @param num
+	 */
+	void setNum(int num);
 	/**
 	 * Get the brand all remote;
 	 * @return
@@ -60,4 +64,9 @@ public interface ITVSmartPicker {
 	 * @return
 	 */
 	int getNowRemoteNum();
+
+	void startAutoPicker(IIRACSmartPickerCallback autocallback);
+
+	void endPicker();
+
 }

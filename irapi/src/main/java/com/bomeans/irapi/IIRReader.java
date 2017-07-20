@@ -95,6 +95,18 @@ public interface IIRReader {
     void startLearningAndSearchCloud(boolean isNewSearch, PREFER_REMOTE_TYPE preferRemoteType, IIRReaderRemoteMatchCallback callback);
 
     /**
+     * Start the learning process, get the matched format and matched remote controller(s) in the passing callback functions.<br>
+     * @param isNewSearch Set to true if you are starting a new learning. Set to false if you are adding the learning to filter the previous matched result.
+     * @param preferRemoteType AC, TV, or Auto. This affects the decision of the "best match" returned.
+     * @param lang Set language to searching
+     * @param typeId Set Type ID
+     * @param brandId Set Brand ID
+     * @param brandName Set Brand Name
+     * @param callback To receive the parsing/searching results
+     */
+    void startLearningAndSearchCloud(boolean isNewSearch, PREFER_REMOTE_TYPE preferRemoteType,String lang,String typeId,String brandId,String brandName,IIRReaderRemoteMatchCallback callback);
+
+    /**
      * Reset the internal learning states if you have previous called startLearningAndSearchCloud().
      */
     void reset();

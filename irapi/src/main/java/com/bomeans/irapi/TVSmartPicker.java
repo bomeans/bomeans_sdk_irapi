@@ -2,6 +2,7 @@ package com.bomeans.irapi;
 
 import android.util.Log;
 
+import com.bomeans.IRKit.ACSmartInfo;
 import com.bomeans.IRKit.BIRTVPicker;
 import com.bomeans.IRKit.ConstValue;
 import com.bomeans.IRKit.RemoteUID;
@@ -104,19 +105,14 @@ public class TVSmartPicker implements ITVSmartPicker {
 		}
 	}
 
-    @Override
-    public void reset() {
-        mCurrentKey = null;
-        mCompleted = false;
-        mResults = null;
-        if (null != mTvPicker) {
-            mTvPicker.begin();
-        }
-    }
-
 	@Override
-	public void setNum(int num) {
-
+	public void reset() {
+		this.mCurrentKey = null;
+		this.mCompleted = Boolean.valueOf(false);
+		this.mResults = null;
+		if(null != this.mTvPicker) {
+			this.mTvPicker.begin();
+		}
 	}
 
 	@Override
@@ -132,5 +128,25 @@ public class TVSmartPicker implements ITVSmartPicker {
 	@Override
 	public int getRemoteCount() {
 		return 0;
+	}
+
+	@Override
+	public void endPicker() {
+
+	}
+
+	@Override
+	public void setNum(int num) {
+
+	}
+
+	@Override
+	public void startAutoPicker(IIRACSmartPickerCallback autocallback) {
+
+	}
+
+	@Override
+	public ACSmartInfo begin() {
+		return null;
 	}
 }

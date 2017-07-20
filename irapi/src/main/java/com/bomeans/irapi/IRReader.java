@@ -233,6 +233,75 @@ public class IRReader implements IIRReader {
     }
 
     @Override
+    public void startLearningAndSearchCloud(boolean isNewSearch, PREFER_REMOTE_TYPE preferRemoteType, String lang, String typeId, String brandId, String brandName,final IIRReaderRemoteMatchCallback callback) {
+        if (null != mIrReader) {
+
+            BIRReader.PREFER_REMOTE_TYPE type;
+            switch (preferRemoteType) {
+                case AC:
+                    type = BIRReader.PREFER_REMOTE_TYPE.AC;
+                    break;
+                case TV:
+                    type = BIRReader.PREFER_REMOTE_TYPE.TV;
+                    break;
+                case Auto:
+                default:
+                    type = BIRReader.PREFER_REMOTE_TYPE.Auto;
+                    break;
+            }
+
+        mIrReader.startLearningAndSearchCloud(isNewSearch, type,lang,typeId,brandId,brandName,new BIRReader.BIRReaderRemoteMatchCallback(){
+            @Override
+            public void onRemoteMatchSucceeded(List<BIRReader.RemoteMatchResult> list) {
+                List<RemoteMatchResult> myResultList = new ArrayList<>();
+                for (int i = 0; i < list.size(); i++) {
+                    myResultList.add(new RemoteMatchResult(
+                            list.get(i).typeID,
+                            list.get(i).brandID,
+                            list.get(i).modelID
+                    ));
+                }
+
+                if (null != callback) {
+                    callback.onRemoteMatchSucceeded(myResultList);
+                }
+            }
+
+            @Override
+            public void onRemoteMatchFailed(BIRReader.CloudMatchErrorCode cloudMatchErrorCode) {
+                if (null != callback) {
+                    callback.onRemoteMatchFailed(getCloudMatchErrorCode(cloudMatchErrorCode));
+                }
+            }
+
+            @Override
+            public void onFormatMatchSucceeded(List<BIRReader.ReaderMatchResult> list) {
+
+                List<ReaderMatchResult> myResultList = new ArrayList<>();
+                for (int i = 0; i < list.size(); i++) {
+                    myResultList.add(new ReaderMatchResult(
+                            list.get(i).formatId,
+                            list.get(i).customCode,
+                            list.get(i).keyCode
+                    ));
+                }
+
+                if (null != callback) {
+                    callback.onFormatMatchSucceeded(myResultList);
+                }
+            }
+
+            @Override
+            public void onFormatMatchFailed(BIRReader.FormatParsingErrorCode formatParsingErrorCode) {
+                if (null != callback) {
+                    callback.onFormatMatchFailed(getFormatParsingErrorCode(formatParsingErrorCode));
+                }
+            }
+        });
+        }
+    }
+
+    @Override
     public void reset() {
 
         if (null != mIrReader) {
