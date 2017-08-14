@@ -12,11 +12,16 @@ public class ACSmartPicker implements ITVSmartPicker{
 
     private com.bomeans.IRKit.ACSmartPicker biracPicker;
     ModelItem modelItem = null;
+    ModelItem nowmodelItem = null;
     private String mCurrentKey = null;
-    RemoteUID mResults = null;
+    RemoteUID mRemoteResults = null;
     private Boolean mCompleted = false;
+    private Boolean mTransmitResponse = false;
+    private Boolean mautopickerend=false;
     RemoteInfo model;
     int result;
+    private SmartPickerResult[] mResults = null;
+
 
     public ACSmartPicker(com.bomeans.IRKit.ACSmartPicker acSmartPicker){
         this.biracPicker = acSmartPicker;
@@ -30,6 +35,8 @@ public class ACSmartPicker implements ITVSmartPicker{
 
     @Override
     public ACSmartInfo begin() {
+        modelItem = null;
+        mCurrentKey= null;
         return biracPicker.begin();
     }
 
@@ -37,7 +44,13 @@ public class ACSmartPicker implements ITVSmartPicker{
         if(modelItem ==null){
            modelItem = begin().remote;
         }else {
-            modelItem = biracPicker.getNextModel();
+            if(!mTransmitResponse) {
+                modelItem = biracPicker.getNextModel();
+            }
+            if(mautopickerend){
+                modelItem =nowmodelItem;
+            mautopickerend = false;
+            }
         }
         RemoteInfo modelInfo = new RemoteInfo(modelItem.model,modelItem.machineModel,modelItem.country,modelItem.releaseTime);
         return modelInfo;
@@ -65,35 +78,50 @@ public class ACSmartPicker implements ITVSmartPicker{
 
 
     public SmartPickerResult[] getPickerResult() {
-        SmartPickerResult[] smartPickerResult;
         if(mCompleted) {
-            mResults = new RemoteUID(biracPicker.getPickerResult().typeID,
-                    biracPicker.getPickerResult().brandID,
-                    biracPicker.getPickerResult().modelID);
-            smartPickerResult = new SmartPickerResult[]{new SmartPickerResult(mResults)};
-
+            return mResults;
         }else {
-            smartPickerResult = null;
+            return null;
         }
-        return smartPickerResult;
     }
 
 
     @Override
     public int setPickerResult(Boolean isWorking) {
+        mTransmitResponse= isWorking;
         result = biracPicker.keyResult(isWorking);
-        if(result==0){
-            mCompleted = true;
+        switch (result){
+            case ConstValue.BIR_PFind:
+                mCompleted = true;
+                mRemoteResults = new RemoteUID(biracPicker.getPickerResult().typeID,
+                        biracPicker.getPickerResult().brandID,
+                        biracPicker.getPickerResult().modelID);
+                mResults = new SmartPickerResult[]{new SmartPickerResult(mRemoteResults)};
+                break;
+            case ConstValue.BIR_PFail:
+                mCompleted = true;
+                mResults = new SmartPickerResult[0];
+                break;
+            case ConstValue.BIR_PNext:
+                mCompleted = false;
+                mResults = null;
+                break;
+            case ConstValue.BIR_PUnknow:
+            default:
+                mCompleted = false;
+                mResults = null;
+                    break;
+
         }
         return result;
     }
     @Override
     public void reset() {
-
+        begin();
     }
     @Override
     public Boolean isPickerCompleted() {
-        return null;
+        return mCompleted;
     }
 
     public int getNowRemoteNum() {
@@ -108,6 +136,8 @@ public class ACSmartPicker implements ITVSmartPicker{
             @Override
             public void giveRemoteNum(int i, ModelItem modelItem) {
                 autocallback.giveNowRemoteInfo(i,modelItem);
+                nowmodelItem = modelItem;
+                mautopickerend = true;
             }
 
             @Override
