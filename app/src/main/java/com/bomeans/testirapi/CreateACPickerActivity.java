@@ -78,7 +78,7 @@ public class CreateACPickerActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 // we've done
-                mInfoText.setText(String.format("Selected Remote: %s", mRemoteInfoList.get(mCurrentIndex)));
+                mInfoText.setText(String.format("Selected Remote: %s", mRemoteInfoList.get(mCurrentIndex).remoteId));
                 enableButtons(false);
             }
         });

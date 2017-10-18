@@ -292,6 +292,35 @@ public class CreateACRemoteActivity extends AppCompatActivity {
                     }
                 }
             });
+        } else if (containString("IR_ACKEY_TEMP_UP", allSupportedKeys) || containString("IR_ACKEY_TEMP_DOWN", allSupportedKeys)) {
+
+            if (containString("IR_ACKEY_TEMP_UP", allSupportedKeys)) {
+                allSupportedKeys = removeString("IR_ACKEY_TEMP_UP", allSupportedKeys);
+                mTempUpButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (null != mMyAcRemote) {
+                            mMyAcRemote.transmitIR("IR_ACKEY_TEMP_UP", null);
+                            // update GUI
+                            updateGUI();
+                        }
+                    }
+                });
+            }
+
+            if (containString("IR_ACKEY_TEMP_DOWN", allSupportedKeys)) {
+                allSupportedKeys = removeString("IR_ACKEY_TEMP_DOWN", allSupportedKeys);
+                mTempDownButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (null != mMyAcRemote) {
+                            mMyAcRemote.transmitIR("IR_ACKEY_TEMP_DOWN", null);
+                            // update GUI
+                            updateGUI();
+                        }
+                    }
+                });
+            }
         } else {
             mHasTemperatureKey = false;
             mTempUpButton.setEnabled(false);
@@ -472,7 +501,7 @@ public class CreateACRemoteActivity extends AppCompatActivity {
 
                     case NoDisplay:   // no display
                         // this type of remote controller does not have LCD display.
-                        isOn = false;
+                        isOn = true;
                         break;
 
                     case AlwaysOn:   // has always on display
