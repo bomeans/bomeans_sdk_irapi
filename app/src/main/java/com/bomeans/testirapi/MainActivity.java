@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 
 import com.bomeans.irapi.*;
 
@@ -51,9 +52,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 Intent intent = new Intent(MainActivity.this, CreateTVRemoteActivity.class);
-                intent.putExtra("type_id", "3");//"1");
-                intent.putExtra("brand_id", "3151");//"12");
-                intent.putExtra("remote_id", "SETTOP_TAIPEINET_TW_1");//"PANASONIC_N2QAYB_000846");
+                intent.putExtra("type_id", "11");//"1");
+                intent.putExtra("brand_id", "3436");//"12");
+                intent.putExtra("remote_id", "LIGHTING_HITACHI_JPLDR1_1122_1");//"PANASONIC_N2QAYB_000846");
                 MainActivity.this.startActivity(intent);
 
             }
@@ -90,8 +91,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, CreateACRemoteActivity.class);
                 intent.putExtra("type_id", "2");
-                intent.putExtra("brand_id", "1449");
-                intent.putExtra("remote_id", "DAIKIN-AI-A1-3");
+                intent.putExtra("brand_id", "1449");    //"3143");
+                intent.putExtra("remote_id", "DAIKIN-AI-A1-3"); //"SAMPO-TWSB56-595-115");
                 MainActivity.this.startActivity(intent);
             }
         });
@@ -120,6 +121,30 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // button: create ac smart picker
+        Button btnCreateACSmartPicker = (Button) findViewById(R.id.button_create_ac_smart_picker);
+        btnCreateACSmartPicker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, CreateACSmartPickerActivity.class);
+                intent.putExtra("type_id", "2");
+                intent.putExtra("brand_id", "3275");
+                MainActivity.this.startActivity(intent);
+            }
+        });
+
+        // button: create ac smart picker
+        Button btnCreateACAutoPicker = (Button) findViewById(R.id.button_create_ac_auto_picker);
+        btnCreateACAutoPicker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, CreateACAutoPickerActivity.class);
+                intent.putExtra("type_id", "2");
+                intent.putExtra("brand_id", "3275");
+                MainActivity.this.startActivity(intent);
+            }
+        });
+
         // button: learn and send
         Button btnLearnAndSend = (Button) findViewById(R.id.button_learn_n_send);
         btnLearnAndSend.setOnClickListener(new View.OnClickListener() {
@@ -141,18 +166,40 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // checkbox: get new
-        final CheckBox chkGetNew = (CheckBox) findViewById(R.id.check_get_new);
-        chkGetNew.setOnClickListener(new View.OnClickListener() {
+        CheckBox chkGetNew = (CheckBox) findViewById(R.id.check_get_new);
+        chkGetNew.setChecked(getNew());
+        chkGetNew.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
-
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 // save to SharedPreferences to share this setting cross Activities
                 SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                 SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putBoolean("get_new", chkGetNew.isChecked());
+                editor.putBoolean("get_new", isChecked);
                 editor.commit();
             }
         });
+
+        CheckBox chkDbTimeStamp = (CheckBox) findViewById(R.id.check_db_timestamp);
+
+        Boolean bCheckDBTimeStamp = checkDbTimeStamp();
+        chkDbTimeStamp.setChecked(bCheckDBTimeStamp);
+        IRAPI.setCheckUpdateBeforeDownload(bCheckDBTimeStamp);
+
+        chkDbTimeStamp.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                // save to SharedPreferences to share this setting cross Activities
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putBoolean("check_db_timestamp", isChecked);
+                editor.commit();
+
+                IRAPI.setCheckUpdateBeforeDownload(isChecked);
+            }
+        });
+
+
+
 
         // check API Key
         if (TestIRAPIApp.BOMEANS_SDK_API_KEY == null || TestIRAPIApp.BOMEANS_SDK_API_KEY.isEmpty()) {
@@ -277,5 +324,10 @@ public class MainActivity extends AppCompatActivity {
     private Boolean getNew() {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         return sharedPref.getBoolean("get_new", false);
+    }
+
+    private Boolean checkDbTimeStamp() {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        return sharedPref.getBoolean("check_db_timestamp", false);
     }
 }

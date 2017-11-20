@@ -11,7 +11,7 @@ import com.bomeans.irapi.IRAPI;
 public class TestIRAPIApp extends Application {
 
     // apply a API KEY from Bomeans to run this demo
-    public static String BOMEANS_SDK_API_KEY = "";
+    public static String BOMEANS_SDK_API_KEY = "7a5fbefec038b14f40189df7cc88999c0540ff846";
 
     private MyIrBlaster mMyIrBlaster = new MyIrBlaster();
 
@@ -33,6 +33,8 @@ public class TestIRAPIApp extends Application {
 
         // set up the IR Blaster hardware data handling
         IRAPI.setCustomerIrBlaster(mMyIrBlaster);
+
+        IRAPI.setWebTimeout(10000, 30000);
 
     }
 
