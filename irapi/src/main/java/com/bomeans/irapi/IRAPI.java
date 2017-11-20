@@ -4,8 +4,22 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.bomeans.IRKit.*;
-import com.bomeans.IRKit.ACSmartPicker;
+import com.bomeans.IRKit.BIRACPicker;
+import com.bomeans.IRKit.BIRReadFirmwareVersionCallback;
+import com.bomeans.IRKit.BIRReader;
+import com.bomeans.IRKit.BIRReaderCallback;
+import com.bomeans.IRKit.BIRRemote;
+import com.bomeans.IRKit.BIRTVPicker;
+import com.bomeans.IRKit.BrandItem;
+import com.bomeans.IRKit.ConstValue;
+import com.bomeans.IRKit.IRKit;
+import com.bomeans.IRKit.IRemoteACCreateCallBack;
+import com.bomeans.IRKit.IRemoteCreateCallBack;
+import com.bomeans.IRKit.IWebAPICallBack;
+import com.bomeans.IRKit.KeyName;
+import com.bomeans.IRKit.ModelItem;
+import com.bomeans.IRKit.TypeItem;
+import com.bomeans.IRKit.VoiceSearchResultItem;
 import com.bomeans.wifi2ir.ISmartLinkCallback;
 
 import java.util.ArrayList;
@@ -20,6 +34,19 @@ import java.util.List;
  */
 public class IRAPI {
 	private static final String TAG = "IRAPI";
+
+	// in build.gradle of irapi
+    public static String getVersion() {
+
+        String IRKitVersion = null;
+        try {
+            IRKitVersion = IRKit.getVersion();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return String.format("IRAPI: %s, IRKit: %s", BuildConfig.VERSION_NAME, null == IRKitVersion ? "unknown" : IRKitVersion);
+    }
 
 	public static void init(String apiKey, Context appContext) {
 		IRKit.setup(apiKey, appContext);
@@ -41,6 +68,24 @@ public class IRAPI {
 			IRKit.setIRHW(new IrBlasterWrapper(irBlaster));
 		}
 	}
+
+	/**
+	 * set the connection/read timeout for the http connection to the server.
+	 * Default timeouts are set to 0, indicating no timeout.
+	 * @param connectionTimeout
+	 * @param readTimeout
+	 */
+	public static void setWebTimeout(int connectionTimeout, int readTimeout) {
+		IRKit.webSetTimeout(connectionTimeout, readTimeout);
+	}
+
+	public static void setParallelDownload(boolean set) {
+	    IRKit.setParallelDownload(set);
+    }
+
+    public static void setCheckUpdateBeforeDownload(boolean set) {
+	    IRKit.setCheckUpdateBeforeWebDownload(set);
+    }
 
 	/**
 	 * Get the remote type (category) list.
@@ -525,9 +570,9 @@ public class IRAPI {
 
 			AsyncTask<?, ?, ?> task = IRKit.createAcSmartPicker(typeId, brandId, getNew, new IRemoteACCreateCallBack() {
 				@Override
-				public void onDataReceived(com.bomeans.IRKit.ACSmartPicker acSmartPicker) {
+				public void onCreateResult(BIRACPicker biracPicker) {
 					if (null != callback) {
-						callback.onPickerCreated(new com.bomeans.irapi.ACSmartPicker(acSmartPicker));
+						callback.onPickerCreated(new ACSmartPicker(biracPicker));
 					}
 				}
 
@@ -574,10 +619,11 @@ public class IRAPI {
 		if (typeId.equals("2")) {
 
 			AsyncTask<?, ?, ?> task = IRKit.createAcSmartPicker(typeId, brandId, getNew, new IRemoteACCreateCallBack() {
+
 				@Override
-				public void onDataReceived(com.bomeans.IRKit.ACSmartPicker acSmartPicker) {
+				public void onCreateResult(BIRACPicker biracPicker) {
 					if (null != callback) {
-						callback.onPickerCreated(new com.bomeans.irapi.ACSmartPicker(acSmartPicker));
+						callback.onPickerCreated(new ACSmartPicker(biracPicker));
 					}
 				}
 
@@ -619,6 +665,7 @@ public class IRAPI {
 			return null != task;
 		}
 	}
+
     public static void createIRReader(Boolean getNew, final IIRReaderCallback callback) {
 
         IRKit.createIRReader(getNew, new BIRReaderCallback() {
@@ -634,6 +681,18 @@ public class IRAPI {
             public void onReaderCreateFailed() {
                 if (null != callback) {
                     callback.onReaderCreateFailed();
+                }
+            }
+        });
+    }
+
+    public static void getFirmwareVersion(final IGetFirmwareVersionCallback callback) {
+
+	    IRKit.getIrBlasterFirmwareVersion(new BIRReadFirmwareVersionCallback() {
+            @Override
+            public void onFirmwareVersionReceived(String versionString) {
+                if (null != callback) {
+                    callback.onCompleted(versionString);
                 }
             }
         });

@@ -1,14 +1,11 @@
 package com.bomeans.irapi;
 
-import android.util.Log;
-
-import com.bomeans.IRKit.ACSmartInfo;
 import com.bomeans.IRKit.BIRTVPicker;
 import com.bomeans.IRKit.ConstValue;
 import com.bomeans.IRKit.RemoteUID;
 
 public class TVSmartPicker implements ITVSmartPicker {
-	private static final String TAG = "sss";
+
 	private BIRTVPicker mTvPicker;
 	
 	private String mCurrentKey = null;
@@ -25,20 +22,16 @@ public class TVSmartPicker implements ITVSmartPicker {
 	public String getPickerKey() {
 		
 		if (null == mTvPicker) {
-			Log.e(TAG, "getPickerKey:mtvpicker" );
 			return null;
 		}
 		
 		if (mCompleted) {
-			Log.e(TAG, "getPickerKey: mcompleted" );
 			return null;
 		}
 		
 		if (null == mCurrentKey) {
-			Log.e(TAG, "getPickerKey: begin" );
 			mCurrentKey = mTvPicker.begin();
 		} else {
-			Log.e(TAG, "getPickerKey: getnextkey" );
 			mCurrentKey = mTvPicker.getNextKey();
 		}
 		
@@ -59,7 +52,7 @@ public class TVSmartPicker implements ITVSmartPicker {
 		int result = mTvPicker.keyResult(isWorking);
 		RemoteUID[] remoteUidArray;
 		
-	 	 switch (result) {
+		switch (result) {
 		case ConstValue.BIR_PFind:
 			mCompleted = true;
 			remoteUidArray = mTvPicker.getPickerResult();
@@ -108,45 +101,28 @@ public class TVSmartPicker implements ITVSmartPicker {
 	@Override
 	public void reset() {
 		this.mCurrentKey = null;
-		this.mCompleted = Boolean.valueOf(false);
+		this.mCompleted = false;
 		this.mResults = null;
-		if(null != this.mTvPicker) {
-			this.mTvPicker.begin();
+		if (null != mTvPicker) {
+			mTvPicker.begin();
 		}
 	}
 
 	@Override
-	public RemoteInfo getModel() {
-		return null;
-	}
+    public String getPickerInfo() {
+	    if (null == mTvPicker) {
+	        return new String("");
+        }
 
-	@Override
-	public int getNowRemoteNum() {
-		return 0;
-	}
+	    return mTvPicker.getPickerInfo();
+    }
 
-	@Override
-	public int getRemoteCount() {
-		return 0;
-	}
+    @Override
+    public boolean isPickerReady() {
+	    if (null == mTvPicker) {
+	        return false;
+        }
 
-	@Override
-	public void endPicker() {
-
-	}
-
-	@Override
-	public void setNum(int num) {
-
-	}
-
-	@Override
-	public void startAutoPicker(IIRACSmartPickerCallback autocallback) {
-
-	}
-
-	@Override
-	public ACSmartInfo begin() {
-		return null;
-	}
+        return mTvPicker.isPickerReady();
+    }
 }

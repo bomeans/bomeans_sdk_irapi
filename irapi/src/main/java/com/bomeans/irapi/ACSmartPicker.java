@@ -1,152 +1,209 @@
 package com.bomeans.irapi;
 
-
-import com.bomeans.IRKit.ACSmartInfo;
 import com.bomeans.IRKit.BIRACPicker;
 import com.bomeans.IRKit.BIRACSmartPickerCallback;
 import com.bomeans.IRKit.ConstValue;
-import com.bomeans.IRKit.ModelItem;
 import com.bomeans.IRKit.RemoteUID;
 
-public class ACSmartPicker implements ITVSmartPicker{
+public class ACSmartPicker implements IACSmartPicker{
 
-    private com.bomeans.IRKit.ACSmartPicker biracPicker;
-    ModelItem modelItem = null;
-    ModelItem nowmodelItem = null;
+    private BIRACPicker mPicker;
     private String mCurrentKey = null;
-    RemoteUID mRemoteResults = null;
     private Boolean mCompleted = false;
-    private Boolean mTransmitResponse = false;
-    private Boolean mautopickerend=false;
-    RemoteInfo model;
-    int result;
     private SmartPickerResult[] mResults = null;
 
 
-    public ACSmartPicker(com.bomeans.IRKit.ACSmartPicker acSmartPicker){
-        this.biracPicker = acSmartPicker;
+    ACSmartPicker(BIRACPicker acSmartPicker){
+        mPicker = acSmartPicker;
+        reset();
     }
 
     @Override
-    public void setNum(int num) {
-            biracPicker.setTryKeyNum(num);
-    }
-
-
-    @Override
-    public ACSmartInfo begin() {
-        modelItem = null;
-        mCurrentKey= null;
-        return biracPicker.begin();
-    }
-
-    public RemoteInfo getModel(){
-        if(modelItem ==null){
-           modelItem = begin().remote;
-        }else {
-            if(!mTransmitResponse) {
-                modelItem = biracPicker.getNextModel();
-            }
-            if(mautopickerend){
-                modelItem =nowmodelItem;
-            mautopickerend = false;
-            }
-        }
-        RemoteInfo modelInfo = new RemoteInfo(modelItem.model,modelItem.machineModel,modelItem.country,modelItem.releaseTime);
-        return modelInfo;
-    }
     public String getPickerKey() {
-        if(null == biracPicker){
+        if (null == mPicker){
             return null;
         }
 
-        if(null == mCurrentKey){
-            ACSmartInfo picker = biracPicker.begin();
-            mCurrentKey = picker.key;
-        }else {
-        mCurrentKey=  biracPicker.getNextKey();
+        if (mCompleted) {
+            return null;
         }
+
+        if (null == mCurrentKey){
+            mCurrentKey = mPicker.begin();
+        } else {
+            mCurrentKey = mPicker.getNextKey();
+        }
+
         return mCurrentKey;
     }
 
+    @Override
     public int transmitIR() {
-        if(null != biracPicker){
-            return biracPicker.transmitIR();
+        if(null != mPicker){
+            return mPicker.transmitIR();
         }
         return ConstValue.BIRTransmitFail;
     }
 
-
-    public SmartPickerResult[] getPickerResult() {
-        if(mCompleted) {
-            return mResults;
-        }else {
-            return null;
-        }
-    }
-
-
     @Override
     public int setPickerResult(Boolean isWorking) {
-        mTransmitResponse= isWorking;
-        result = biracPicker.keyResult(isWorking);
+
+        if (null == mPicker) {
+            mCompleted = true;
+            mResults = null;
+            return ConstValue.BIR_PFail;
+        }
+
+        int result = mPicker.keyResult(isWorking);
+        RemoteUID[] remoteUidArray = null;
+
         switch (result){
             case ConstValue.BIR_PFind:
                 mCompleted = true;
-                mRemoteResults = new RemoteUID(biracPicker.getPickerResult().typeID,
-                        biracPicker.getPickerResult().brandID,
-                        biracPicker.getPickerResult().modelID);
-                mResults = new SmartPickerResult[]{new SmartPickerResult(mRemoteResults)};
+                remoteUidArray = mPicker.getPickerResult();
                 break;
+
             case ConstValue.BIR_PFail:
                 mCompleted = true;
-                mResults = new SmartPickerResult[0];
+                remoteUidArray = new RemoteUID[0];
                 break;
+
             case ConstValue.BIR_PNext:
                 mCompleted = false;
                 mResults = null;
                 break;
+
             case ConstValue.BIR_PUnknow:
             default:
                 mCompleted = false;
                 mResults = null;
-                    break;
-
+                break;
         }
+
+        if (mCompleted && (remoteUidArray != null)) {
+            mResults = new SmartPickerResult[remoteUidArray.length];
+            for (int i = 0; i < remoteUidArray.length; i++) {
+                mResults[i] = new SmartPickerResult(remoteUidArray[i]);
+            }
+        }
+
         return result;
     }
-    @Override
-    public void reset() {
-        begin();
-    }
+
     @Override
     public Boolean isPickerCompleted() {
         return mCompleted;
     }
 
-    public int getNowRemoteNum() {
-        return biracPicker.getNowModelNum();
-    }
-    public int getRemoteCount() {
-        return biracPicker.getModelCount();
+    @Override
+    public SmartPickerResult[] getPickerResult() {
+        if (mCompleted) {
+            return mResults;
+        } else {
+            return null;
+        }
     }
 
-    public void startAutoPicker(final IIRACSmartPickerCallback autocallback){
-        biracPicker.beginAutoPicker(new BIRACSmartPickerCallback() {
+    @Override
+    public void reset() {
+        mCurrentKey = null;
+        mCompleted = false;
+        mResults = null;
+        if (null != mPicker) {
+            mPicker.begin();
+        }
+    }
+
+    @Override
+    public void startAutoPicker(final IIRACSmartPickerCallback myCallback){
+
+        mCompleted = false;
+        mResults = null;
+
+        if (null == mPicker) {
+            mCompleted = true;
+            mResults = null;
+
+            if (null != myCallback) {
+                myCallback.onRemoteMatchFailed();
+            }
+
+            return;
+        }
+
+        mPicker.beginAutoPicker(new BIRACSmartPickerCallback() {
+
             @Override
-            public void giveRemoteNum(int i, ModelItem modelItem) {
-                autocallback.giveNowRemoteInfo(i,modelItem);
-                nowmodelItem = modelItem;
-                mautopickerend = true;
+            public void onRemoteMatched(String remoteId) {
+
+                // make this data ready before calling the callback.
+                mCompleted = true;
+
+                RemoteUID[] remoteUidArray = mPicker.getPickerResult();
+
+                if (mCompleted && (remoteUidArray != null)) {
+                    mResults = new SmartPickerResult[remoteUidArray.length];
+                    for (int i = 0; i < remoteUidArray.length; i++) {
+                        mResults[i] = new SmartPickerResult(remoteUidArray[i]);
+                    }
+                }
+
+                if (null != myCallback) {
+                    myCallback.onRemoteMatched(remoteId);
+                }
             }
 
             @Override
-            public void NoMatches() {
-                autocallback.Nomatch();
+            public void onRemoteMatchFailed() {
+                mCompleted = true;
+                mResults = null;
+
+                if (null != myCallback) {
+                    myCallback.onRemoteMatchFailed();
+                }
+            }
+
+            @Override
+            public void onPickerInfo(int currentIndex, int totalCount, String currentRemoteId) {
+                if (null != myCallback) {
+                    myCallback.onPickerInfo(currentIndex, totalCount, currentRemoteId);
+                }
             }
         });
     }
-    public void endPicker(){
-        biracPicker.endAutoPicker();
+
+    @Override
+    public void setAutoPickerMatched(){
+        if (null != mPicker) {
+            mPicker.setAutoPickerMatched();
+        }
+    }
+
+    @Override
+    public void endAutoPicker() {
+        if (null != mPicker) {
+            mPicker.endAutoPicker();
+        }
+    }
+
+    @Override
+    public void setAutoPickerInterval(long msec) {
+        if (null != mPicker) {
+            mPicker.setAutoPickerInterval(msec);
+        }
+    }
+
+    @Override
+    public String getPickerInfo() {
+        if (null == mPicker) {
+            return "";
+        }
+
+        return mPicker.getPickerInfo();
+    }
+
+    @Override
+    public boolean isPickerReady() {
+        return ((null != mPicker) && mPicker.isPickerReady());
     }
 }
