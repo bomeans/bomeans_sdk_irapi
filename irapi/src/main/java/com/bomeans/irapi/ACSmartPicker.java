@@ -206,4 +206,20 @@ public class ACSmartPicker implements IACSmartPicker{
     public boolean isPickerReady() {
         return ((null != mPicker) && mPicker.isPickerReady());
     }
+
+    @Override
+    public void setNumTestKeys(int numTestKeys) {
+        if (null != mPicker) {
+            mPicker.setNumTestKeys(numTestKeys);
+        }
+    }
+
+    @Override
+    public int getNumTestKeys() {
+        if (null != mPicker) {
+            return mPicker.getNumTestKeys();
+        }
+
+        return 0;
+    }
 }

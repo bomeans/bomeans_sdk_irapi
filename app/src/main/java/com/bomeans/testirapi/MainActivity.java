@@ -120,6 +120,8 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.this.startActivity(intent);
             }
         });
+        // the AC picker is moved into the IRAPI, see below (CreateACSmartPickerActivity)
+        btnRunACPicker.setVisibility(View.GONE);
 
         // button: create ac smart picker
         Button btnCreateACSmartPicker = (Button) findViewById(R.id.button_create_ac_smart_picker);

@@ -138,9 +138,13 @@ public class CreateTVSmartPickerActivity extends AppCompatActivity {
                     Log.d(DBG_TAG, keyId);
                 }
 
-                IRAPI.createSmartPicker(typeId, brandId,getNew(),
-                        new String[] {"IR_KEY_POWER_TOGGLE", "IR_KEY_VOLUME_UP", "IR_KEY_VOLUME_DOWN"},
+                // passing null to use default key sequence, or passing a string array to use customized key sequence for the picker
+                //String[] defaultKeyList = list.toArray(new String[list.size()]);
+                String[] defaultKeyList = new String[] {"IR_KEY_POWER_TOGGLE", "IR_KEY_VOLUME_UP", "IR_KEY_VOLUME_DOWN"};
+                //String[] defaultKeyList = null;
 
+                IRAPI.createSmartPicker(typeId, brandId,getNew(),
+                        defaultKeyList,
                         new ICreateSmartPickerCallback() {
                     @Override
                     public void onPickerCreated(ITVSmartPicker smartPicker) {

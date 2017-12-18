@@ -2,10 +2,10 @@ package com.bomeans.testirapi;
 
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,6 +14,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bomeans.irapi.IACSmartPicker;
 import com.bomeans.irapi.ICreateSmartPickerCallback;
 import com.bomeans.irapi.IGetSmartPickerKeysCallback;
 import com.bomeans.irapi.IRAPI;
@@ -26,7 +27,7 @@ public class CreateACSmartPickerActivity extends AppCompatActivity {
 
     private String DBG_TAG = "IRAPI";
 
-    private ITVSmartPicker mSmartPicker;
+    private IACSmartPicker mSmartPicker;
 
     private Button mYesButton;
     private Button mNoButton;
@@ -145,10 +146,11 @@ public class CreateACSmartPickerActivity extends AppCompatActivity {
                                 if (aBoolean) {
                                     enableButtons(true);
                                 } else {
-                                    Toast.makeText(CreateACSmartPickerActivity.this, "Create remote timeout!, Please restart.", Toast.LENGTH_SHORT);
+                                    Toast.makeText(CreateACSmartPickerActivity.this, "Create remote timeout!, Please restart.", Toast.LENGTH_SHORT)
+                                    .show();
                                 }
                             }
-                        }.execute();
+                        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                     }
                 }
             }
@@ -180,7 +182,7 @@ public class CreateACSmartPickerActivity extends AppCompatActivity {
                 }
 
                 IRAPI.createSmartPicker(typeId, brandId, getNew(),
-                        new String[] {"IR_KEY_POWER_TOGGLE", "IR_KEY_VOLUME_UP", "IR_KEY_VOLUME_DOWN"},
+                        null,
 
                         new ICreateSmartPickerCallback() {
                             @Override
@@ -188,8 +190,13 @@ public class CreateACSmartPickerActivity extends AppCompatActivity {
 
                                 progressBar.setVisibility(View.GONE);
 
-                                mSmartPicker = smartPicker;
-                                startSmartPicker();
+                                if (smartPicker instanceof IACSmartPicker) {
+                                    mSmartPicker = (IACSmartPicker) smartPicker;
+
+                                    mSmartPicker.setNumTestKeys(3);
+
+                                    startSmartPicker();
+                                }
                             }
 
                             @Override

@@ -1,6 +1,7 @@
 package com.bomeans.irapi;
 
 /**
+ *
  * Created by ray on 2017/11/14.
  */
 
@@ -38,4 +39,21 @@ public interface IACSmartPicker extends ITVSmartPicker {
      * @param msec time interval among IR signal transmission. (available: 1000(1s) to 10000(10s))
      */
     void setAutoPickerInterval(long msec);
+
+    /**
+     * Set the number(depth) of test keys (1-3).
+     * Test keys are the keys used for testing if the remote reacts to the transmitted signal.
+     * Currently the test key sequence is POWER, MODE, and TEMPerature.
+     * Set to one if only POWER key is used for testing the appliance.
+     *
+     * @param numTestKeys 1-3 keys for test. (Default to 1)
+     */
+    void setNumTestKeys(int numTestKeys);
+
+    /**
+     * Get the number of test keys.
+     *
+     * @return the number (depth) of test keys
+     */
+    int getNumTestKeys();
 }
